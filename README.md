@@ -1,4 +1,4 @@
-# Velvet Navy — Undangan Pernikahan Digital
+# Template Undangan Digital — Velvet Navy
 
 Template undangan pernikahan digital satu file HTML dengan gaya editorial majalah: bab bernomor, tipografi serif elegan, palet navy & emas. Bahasa Indonesia formal.
 
