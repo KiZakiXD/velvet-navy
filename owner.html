@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1B1B1F">
+<meta name="robots" content="noindex,nofollow">
+<title>Owner — Raka &amp; Nadia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--sage-800:#1B1B1F;--sage-900:#101013;--sage:#8C6D2F;--sage-soft:#E9E2CC;--ivory:#F7F2E5;--gold:#B9975B;--ink:#2B3328;--ink-soft:#55503F}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:#20281F;color:var(--ink)}
+.wrap{max-width:520px;margin:0 auto;background:var(--ivory);min-height:100dvh;padding:28px 20px 60px}
+h1{font-family:'Playfair Display',serif;font-size:27px;color:var(--sage-900);text-align:center}
+.sub{text-align:center;font-size:13px;color:var(--ink-soft);margin:8px 0 22px;line-height:1.6}
+label{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);display:block;margin:18px 0 8px}
+textarea,input,select{width:100%;border:1.5px solid #D9CFB2;border-radius:14px;padding:13px 14px;font:inherit;font-size:14px;background:#fff;color:var(--ink)}
+textarea{line-height:1.65;resize:vertical}
+.hint{font-size:12px;color:var(--ink-soft);margin-top:7px;line-height:1.6}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:14px 22px;border-radius:999px;border:0;cursor:pointer;text-decoration:none}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#A5854A);color:#fff;width:100%;margin-top:16px}
+.btn-wa{background:#25D366;color:#fff;padding:10px 16px;font-size:11px}
+.btn-copy{background:var(--sage-soft);color:var(--sage-800);padding:10px 16px;font-size:11px}
+.btn-add{background:#fff;border:1.5px solid var(--sage);color:var(--sage-800);padding:10px 16px;font-size:11px;margin-top:10px}
+.card{background:#fff;border:1px solid #E7DFC9;border-radius:18px;padding:16px;margin-top:12px;box-shadow:0 10px 24px -16px rgba(47,59,44,.3)}
+.card h3{font-family:'Playfair Display',serif;font-size:18px;color:var(--sage-900)}
+.link{font-size:11.5px;color:var(--ink-soft);word-break:break-all;background:var(--ivory);border-radius:10px;padding:9px 11px;margin:9px 0 4px;line-height:1.55}
+.link b{color:var(--sage-800)}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.count{text-align:center;font-weight:700;color:var(--sage-800);margin-top:20px;font-size:14px}
+.gate{max-width:340px;margin:16vh auto 0;text-align:center}
+.gate p{font-size:13.5px;color:var(--ink-soft);margin:10px 0 16px;line-height:1.6}
+.err{color:#B3261E;font-size:13px;min-height:18px;margin-top:10px}
+.giftrow{background:#fff;border:1px solid #E7DFC9;border-radius:14px;padding:12px;margin-top:10px}
+.giftrow input{margin-bottom:8px}
+.giftrow .del{background:none;border:0;color:#B3261E;font-size:12px;font-weight:700;cursor:pointer;padding:2px 0}
+.toast{position:fixed;bottom:26px;left:50%;transform:translate(-50%,16px);background:var(--sage-900);color:#fff;font-size:13px;padding:11px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:.3s;z-index:9;white-space:nowrap}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <!-- PIN -->
+  <div id="gate" class="gate">
+    <h1>Area Owner</h1>
+    <p>Halaman khusus pengantin / pengirim undangan.<br>Masukkan kode akses untuk melanjutkan.</p>
+    <input type="password" id="pin" placeholder="Kode akses" autocomplete="off" style="text-align:center">
+    <p class="err" id="pinErr"></p>
+    <button class="btn btn-gold" id="pinBtn" type="button">Masuk</button>
+  </div>
+
+  <!-- PANEL -->
+  <div id="panel" hidden>
+    <h1>Kirim Undangan</h1>
+    <p class="sub">Raka &amp; Nadia · Sabtu, 20 Maret 2027<br>Isi nama tamu, link personal otomatis jadi per orang.</p>
+
+    <label for="names">Daftar Nama Tamu</label>
+    <textarea id="names" rows="8" placeholder="Satu nama per baris. Contoh:&#10;Keluarga Besar Haji Slamet&#10;Bapak Andi & Keluarga&#10;Mbak Rina | 081234567890"></textarea>
+    <p class="hint">Tambahkan nomor WA setelah tanda <b>|</b> kalau mau tombol kirimnya langsung ke nomor orangnya. Tanpa nomor juga bisa — nanti tinggal pilih kontak di WhatsApp. Daftar ini tersimpan otomatis di HP ini.</p>
+
+    <label for="template">Template Pesan WhatsApp</label>
+    <textarea id="template" rows="7"></textarea>
+    <p class="hint">Pakai <b>{nama}</b> untuk nama tamu dan <b>{link}</b> untuk link undangan tamu itu (sudah termasuk pengaturan foto &amp; amplop di bawah).</p>
+
+    <label for="layoutSel">Tata Letak Foto Mempelai</label>
+    <select id="layoutSel">
+      <option value="menyatu">Menyatu — satu bingkai foto berdua</option>
+      <option value="pisah">Pisah — dua bingkai, foto sendiri-sendiri</option>
+    </select>
+
+    <label for="fotoSel">Foto Berdua (untuk layout Menyatu)</label>
+    <select id="fotoSel">
+      <option value="couple">Foto bawaan (foto/couple.jpg)</option>
+      <option value="g1">Foto galeri 1 (foto/g1.jpg)</option>
+      <option value="g2">Foto galeri 2 (foto/g2.jpg)</option>
+      <option value="g3">Foto galeri 3 (foto/g3.jpg)</option>
+      <option value="g4">Foto galeri 4 (foto/g4.jpg)</option>
+      <option value="g5">Foto galeri 5 (foto/g5.jpg)</option>
+      <option value="g6">Foto galeri 6 (foto/g6.jpg)</option>
+      <option value="g7">Foto galeri 7 (foto/g7.jpg)</option>
+      <option value="g8">Foto galeri 8 (foto/g8.jpg)</option>
+      <option value="g9">Foto galeri 9 (foto/g9.jpg)</option>
+    </select>
+
+    <label>Kartu Amplop Tambahan</label>
+    <div id="giftRows"></div>
+    <button class="btn btn-add" id="giftAdd" type="button">+ Tambah Kartu Bank / E-Wallet</button>
+    <p class="hint">Kartu tambahan tampil di section Amplop Digital undangan, setelah kartu bawaan. Total kartu (bawaan + tambahan + QRIS) maksimal 6.</p>
+
+    <label for="qrisSel">Gambar QRIS di Undangan</label>
+    <select id="qrisSel">
+      <option value="">Ikuti bawaan template</option>
+      <option value="file">Pakai file qris-demo.png di folder ini</option>
+      <option value="url">Pakai URL gambar sendiri</option>
+    </select>
+    <input id="qrisUrl" type="url" placeholder="https://contoh.com/qris-saya.png" hidden style="margin-top:8px">
+    <p class="hint">Pilihan foto, tata letak, dan kartu amplop ikut terbawa di link tiap tamu.</p>
+
+    <button class="btn btn-gold" id="genBtn" type="button">Buat Link Semua Tamu</button>
+    <p class="count" id="count"></p>
+    <div class="row" id="bulkRow" hidden>
+      <button class="btn btn-copy" id="copyAll" type="button">Salin Semua Link</button>
+    </div>
+    <div id="list"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   PIN OWNER — verifikasi lokal di browser (tanpa server).
+   GANTI PIN DI SINI: ubah teks di dalam tanda kutip di bawah.
+   ============================================================ */
+const PIN = "123456";
+
+/* Alamat dasar undangan = folder tempat file ini berada (otomatis,
+   mengikuti domain/subfolder apa pun tempat kamu meng-upload). */
+const BASE = (function(){
+  if(location.protocol === "file:") return location.href.replace(/[^/]*$/, "");
+  return location.origin + location.pathname.replace(/[^/]*$/, "");
+})();
+
+const $ = s => document.querySelector(s);
+function toast(m){ const t = $("#toast"); t.textContent = m; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2000); }
+async function copyText(v, msg){ try { await navigator.clipboard.writeText(v); toast(msg || "Tersalin"); } catch(e){ toast(v); } }
+
+/* PIN */
+function unlock(){ $("#gate").hidden = true; $("#panel").hidden = false; }
+if(sessionStorage.getItem("owner-ok") === "1") unlock();
+function tryPin(){
+  if($("#pin").value.trim() === PIN){ sessionStorage.setItem("owner-ok", "1"); unlock(); }
+  else $("#pinErr").textContent = "Kode salah, coba lagi.";
+}
+$("#pinBtn").addEventListener("click", tryPin);
+$("#pin").addEventListener("keydown", e => { if(e.key === "Enter") tryPin(); });
+
+/* Template pesan default */
+const DEF = `Assalamu'alaikum Warahmatullahi Wabarakatuh
+
+Kepada Yth. {nama}
+
+Tanpa mengurangi rasa hormat, kami mengundang Bapak/Ibu/Saudara/i untuk hadir di acara pernikahan kami:
+
+Raka Pradana & Nadia Safitri
+Sabtu, 20 Maret 2027
+Gedung Serbaguna Melati, Jl. Melati Raya No. 8, Jakarta Selatan
+
+Detail undangan: {link}
+
+Merupakan suatu kebahagiaan bagi kami apabila berkenan hadir dan memberikan doa restu. Terima kasih.
+
+Wassalamu'alaikum Warahmatullahi Wabarakatuh`;
+(function(){
+  let t = localStorage.getItem("owner-template");
+  if(t && t.includes("Short link:")){ /* migrasi template versi lama: satu link saja */
+    t = t.replace("Detail undangan: {short}", "Detail undangan: {link}").replace(/\nShort link: \{[a-z]+\}/g, "");
+    localStorage.setItem("owner-template", t);
+  }
+  $("#template").value = t || DEF;
+})();
+$("#names").value = localStorage.getItem("owner-names") || "";
+$("#names").addEventListener("input", e => localStorage.setItem("owner-names", e.target.value));
+$("#template").addEventListener("input", e => localStorage.setItem("owner-template", e.target.value));
+
+/* ===== Pengaturan tampilan & amplop (tersimpan di HP ini) ===== */
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let giftState = { rows: [], qris: "", qrisUrl: "" };
+try { giftState = Object.assign(giftState, JSON.parse(localStorage.getItem("owner-gifts") || "{}")); } catch(e){}
+function saveGifts(){ localStorage.setItem("owner-gifts", JSON.stringify(giftState)); }
+function renderGiftRows(){
+  const wrap = $("#giftRows"); wrap.innerHTML = "";
+  giftState.rows.forEach((r, i) => {
+    const d = document.createElement("div"); d.className = "giftrow";
+    d.innerHTML = '<input data-k="t" placeholder="Layanan — mis. BCA / DANA / OVO" value="' + esc(r.t || "") + '">'
+      + '<input data-k="n" placeholder="Nomor rekening / nomor HP e-wallet" value="' + esc(r.n || "") + '">'
+      + '<input data-k="h" placeholder="Atas nama" value="' + esc(r.h || "") + '" style="margin-bottom:0">'
+      + '<button class="del" type="button">Hapus kartu ini</button>';
+    d.querySelectorAll("input").forEach(inp => inp.addEventListener("input", () => {
+      giftState.rows[i][inp.dataset.k] = inp.value; saveGifts(); refreshLinks();
+    }));
+    d.querySelector(".del").addEventListener("click", () => { giftState.rows.splice(i, 1); saveGifts(); renderGiftRows(); refreshLinks(); });
+    wrap.appendChild(d);
+  });
+}
+$("#giftAdd").addEventListener("click", () => {
+  if(giftState.rows.length >= 4){ toast("Maksimal 4 kartu tambahan"); return; }
+  giftState.rows.push({t: "", n: "", h: ""}); saveGifts(); renderGiftRows();
+});
+$("#layoutSel").value = localStorage.getItem("owner-layout") || "menyatu";
+$("#fotoSel").value = localStorage.getItem("owner-foto") || "couple";
+$("#qrisSel").value = giftState.qris || "";
+$("#qrisUrl").value = giftState.qrisUrl || "";
+$("#qrisUrl").hidden = giftState.qris !== "url";
+$("#layoutSel").addEventListener("change", e => { localStorage.setItem("owner-layout", e.target.value); refreshLinks(); });
+$("#fotoSel").addEventListener("change", e => { localStorage.setItem("owner-foto", e.target.value); refreshLinks(); });
+$("#qrisSel").addEventListener("change", e => { giftState.qris = e.target.value; $("#qrisUrl").hidden = e.target.value !== "url"; saveGifts(); refreshLinks(); });
+$("#qrisUrl").addEventListener("input", e => { giftState.qrisUrl = e.target.value; saveGifts(); refreshLinks(); });
+renderGiftRows();
+
+function giftsParam(){
+  const rows = giftState.rows.filter(r => (r.t || "").trim() && (r.n || "").trim())
+    .map(r => ({ t: r.t.trim(), n: r.n.trim(), h: (r.h || "").trim() }));
+  let q = "";
+  if(giftState.qris === "file") q = "qris-demo.png";
+  if(giftState.qris === "url") q = (giftState.qrisUrl || "").trim();
+  if(!rows.length && !q) return "";
+  const payload = {}; if(rows.length) payload.g = rows; if(q) payload.q = q;
+  return btoa(unescape(encodeURIComponent(JSON.stringify(payload)))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+function linkSuffix(){
+  let suf = "";
+  if($("#layoutSel").value === "pisah") suf += "&layout=pisah";
+  if($("#fotoSel").value !== "couple") suf += "&foto=" + $("#fotoSel").value;
+  const gp = giftsParam(); if(gp) suf += "&gifts=" + gp;
+  return suf;
+}
+
+/* ===== Buat link per tamu ===== */
+let lastLinks = [];
+function generate(){
+  const lines = $("#names").value.split("\n").map(x => x.trim()).filter(Boolean);
+  const tpl = $("#template").value;
+  const list = $("#list"); list.innerHTML = ""; lastLinks = [];
+  if(!lines.length){ $("#count").textContent = ""; $("#bulkRow").hidden = true; toast("Isi dulu nama tamunya"); return; }
+  const suf = linkSuffix();
+  lines.forEach(line => {
+    const parts = line.split("|").map(x => (x || "").trim());
+    const name = parts[0]; if(!name) return;
+    let phone = (parts[1] || "").replace(/[^0-9]/g, ""); if(phone.startsWith("0")) phone = "62" + phone.slice(1);
+    const link = BASE + "?to=" + encodeURIComponent(name).replace(/%20/g, "+") + suf;
+    lastLinks.push(name + ": " + link);
+    const msg = tpl.replaceAll("{nama}", name).replaceAll("{link}", link).replaceAll("{short}", link);
+    const wa = phone ? "https://wa.me/" + phone + "?text=" + encodeURIComponent(msg) : "https://wa.me/?text=" + encodeURIComponent(msg);
+    const card = document.createElement("div"); card.className = "card";
+    card.innerHTML = "<h3>" + esc(name) + "</h3>"
+      + '<p class="link">Link: <b>' + esc(link) + "</b></p>"
+      + '<div class="row"><a class="btn btn-wa" target="_blank" rel="noopener" href="' + wa + '">Kirim via WA</a>'
+      + '<button class="btn btn-copy" type="button" data-copy="' + esc(link) + '">Salin Link</button></div>';
+    list.appendChild(card);
+  });
+  $("#count").textContent = lastLinks.length + " tamu siap dikirim";
+  $("#bulkRow").hidden = false;
+  list.querySelectorAll("[data-copy]").forEach(b => b.addEventListener("click", () => copyText(b.dataset.copy, "Link tersalin")));
+}
+function refreshLinks(){ if($("#names").value.trim()) generate(); }
+$("#genBtn").addEventListener("click", generate);
+$("#copyAll").addEventListener("click", () => copyText(lastLinks.join("\n"), "Semua link tersalin"));
+if($("#names").value.trim()) generate();
+</script>
+</body>
+</html>
